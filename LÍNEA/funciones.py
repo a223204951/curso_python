@@ -15,5 +15,10 @@ if __name__ == "__main__":
     m = 3
     b = 2
     y = calcular_y(x, m, b)
-    
+
     print(y)
+
+    if y == 2:
+        print("Prueba exitosa :3")
+    else:
+        print("Prueba fallida u.u")
