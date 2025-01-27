@@ -1,12 +1,12 @@
 '''
-FUNCIONES AUXILIARES PARA EL PROGRAMA "LÍNEA"
+    FUNCIONES AUXILIARES PARA EL PROGRAMA "LÍNEA"
 '''
 
 def calcular_y(x, m, b):
     '''
-    Calcula "y" de acuerdo a la pendiente "m" y
-    el punto de intersección en "A" y "B"
-    retornando el valor de "y"
+        Calcula "y" de acuerdo a la pendiente "m" y
+        el punto de intersección en "A" y "B"
+        retornando el valor de "y"
     '''
     return m*x+b
 
