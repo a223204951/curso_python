@@ -1,16 +1,13 @@
-'''
-TABLERO.PY: DIBUJA EL
-TABLERO DEL JUEGO DEL
-GATO :3
-'''
+# TABLERO.PY: DIBUJA EL
+# TABLERO DEL JUEGO DEL
+# GATO :3
+
 
 import random
 
 def dibuja_tablero(simbolos:dict):
-    '''
-    DIBUJA EL TABLERO
-    DEL JUEGO DEL GATO
-    '''
+    # DIBUJA EL TABLERO
+    # DEL JUEGO DEL GATO
     print(f'''
     {simbolos['1']} | {simbolos['2']} | {simbolos['3']}
     ---------
@@ -19,10 +16,24 @@ def dibuja_tablero(simbolos:dict):
     {simbolos['7']} | {simbolos['8']} | {simbolos['9']}
     ''')
 
+def ia(simbolos:dict):
+    # ESTRETAGIA DE LA COMPUTADORA
+    ocupado = True
+    while ocupado is True:
+        x = random.choice(list
+        (simbolos.keys()))
+        if simbolos[x] not in ['X', 'O']:
+            simbolos[x] = 'O'
+            ocupado = False
+
 if __name__ == '__main__':
     numeros = [str(i) for i in range(1,10)]
     dsimbolos = {x:x for x in numeros}
     dibuja_tablero(dsimbolos)
+    ia(dsimbolos)
+    dibuja_tablero(dsimbolos)
+
+    '''
     x = random.choice(numeros)
     numeros.remove(x)
     dsimbolos[x] = 'X'
@@ -31,3 +42,4 @@ if __name__ == '__main__':
     numeros.remove(o)
     dsimbolos[o] = 'O'
     dibuja_tablero(dsimbolos)
+    '''
