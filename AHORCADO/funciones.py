@@ -13,7 +13,7 @@ def carga_pantillas(nombre_plantilla:str)->dict:
     '''Carga una plantilla y regresa una lista con las palabras'''
     plantillas = {}
     for i in range(6):
-        plantillas[i] = carga_archivo_texto(f'./plantillas/{nombre_plantilla}-{i}.txt')
+        plantillas[i] = carga_archivo_texto(f'./PLANTILLAS/{nombre_plantilla}-{i}.txt')
     return plantillas
 
 
