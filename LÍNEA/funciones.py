@@ -1,4 +1,5 @@
 '''archivo con todas las funciones necesarias para la aplicación "linea" '''
+
 import matplotlib.pyplot as plt
 
 def calcular_y(x:float, m:float, b:float)->float:
