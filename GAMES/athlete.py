@@ -1,4 +1,4 @@
-class athlete:
+class Athlete:
     '''
     Athlete class, with only name attribute.
     '''
@@ -10,6 +10,11 @@ class athlete:
     
     def __repr__(self):
         return f"Athlete: ('{self.name}')"
+    
+    def to_json(self)->dict:
+        return {
+            "Name": self.name
+        }
     
     def display(self):
         print(f"{self.name}")

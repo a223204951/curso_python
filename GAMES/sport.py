@@ -63,9 +63,10 @@ if __name__ == "__main__":
     #Escritura de los deportes en un archivo JSON
     import json
     archivo_json = "deportes.json"
-    with open(archivo_json, "w") as file:
-        for d in sport_list:
-            json.dump(d.to_json(), file)
-            file.write("\n")
-    #Lectura de los deportes en un archivo JSON
+    #Convertimos cada deporte a un formato JSON
+    sports_json = [sport.to_json() for sport in sport_list]
+    #Escribimos toda la lista de deportes en el archivo JSON
+    with open(archivo_json, "w", encoding='utf8') as file:
+        json.dump(sports_json, file, indent=4)
+    # Leemos el archivo JSON
     sport_list_json = []
