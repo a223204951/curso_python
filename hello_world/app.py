@@ -9,19 +9,19 @@ def index():
     return '''<html>
                 <head>
                     <title> Hello World !! :3 </title>
+                </head>
                         <body><h1> Hola Mundo !! :3 </h1>
                         <p> Ir a la página de <a href="/about">Acerca de</a></p>
                         </body>
-                </head>
             </html>'''
 
-@app.route('/') # HOME PAGE O RAÍZ O ÍNDICE
+@app.route('/about') # ACERCA DE...
 def index():
     return '''<html>
                 <head>
-                    <title> Hello World !! :3 </title>
-                        <body><h1> Hola Mundo !! :3 </h1>
-                        <p> Ir a la página de <a href="/about">Acerca de</a></p>
-                        </body>
+                    <title> Acerca de...</title>
                 </head>
+                        <body><h1> Acerca de Lani !! :3</h1>
+                        <p> Ir a la página de <a href="/about">Inicio</a></p>
+                        </body>
             </html>'''
