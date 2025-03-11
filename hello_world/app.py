@@ -25,3 +25,6 @@ def index():
                         <p> Ir a la página de <a href="/about">Inicio</a></p>
                         </body>
             </html>'''
+
+if __name__ == '__main__':
+    app.run(debug=True) #Activar el modo de depuración
