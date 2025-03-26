@@ -22,8 +22,8 @@ def index():
 
 @app.route('/actores')
 def actores():
-    
-    return render_template('templates/actores.html', actores = sistema.actores)
+    lista_actores = sistema.actores.values()
+    return render_template('actores.html', actores = lista_actores)
 
 @app.route('/peliculas')
 def peliculas():
