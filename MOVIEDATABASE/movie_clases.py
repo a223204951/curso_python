@@ -143,6 +143,9 @@ if __name__ == '__main__':
     lista_peliculas = sistema.obtener_peliculas_por_actor(1)
     for pelicula in lista_peliculas:
         print(f"{pelicula.id_pelicula}:{pelicula.titulo_pelicula} ({pelicula.fecha_lanzamiento.year})")
+    print("--------------------------------")
+    for actor in sistema.actores.values():
+        print(f"{actor.id_estrella}:{actor.nombre} ({actor.fecha_nacimiento.year})")
     #print(sistema.actores)
     #print(sistema.peliculas)
     #print(sistema.relaciones)
