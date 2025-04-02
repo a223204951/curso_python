@@ -1,5 +1,5 @@
 ''' Programa principal de MovieDB '''
-from flask import Flask, request, url_for, render_template, redirect
+from flask import Flask, request, session, url_for, render_template, redirect
 import os
 import random
 import movie_classes as mc

@@ -213,12 +213,12 @@ if __name__ == '__main__':
     #hashed_users = "datos/movies_db - users_hashed.csv"
     #sistema.guardar_csv(hashed_users, sistema.usuarios)
     #print(f'Se escribió el archivo {hashed_users}')
-    u = sistema.usuarios['fcirettg']
+    u = sistema.usuarios['lani']
     print(type(u))
     print(u.username)
     print(u.password)
     print(u.hash_string(u.password))
-    exito = sistema.login('fcirettg', '12345')
+    exito = sistema.login('lani', '12345')
     print(exito)
     if (exito):
         print(sistema.usuario_actual.username)
