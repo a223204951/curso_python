@@ -1,5 +1,4 @@
 ''' Programa principal de movieDatabase '''
-from pickle import GET
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import random
 import os
@@ -72,7 +71,7 @@ def logout():
     flash('Has cerrado sesión correctamente', 'info')
     return redirect(url_for('index'))
 
-@app.route('/agregar_relacion', methods=[GET])
+@app.route('/agregar_relacion', methods=['GET'])
 def agregar_relacion():
     #Agregar una relacion entre un actor y una pelicula
     if sistema.usuario_actual is None:
