@@ -1,48 +1,55 @@
-''' Programa principal de MovieDB '''
-from flask import Flask, request, session, url_for, render_template, redirect
-import os
+''' Programa principal de movieDatabase '''
+from pickle import GET
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import random
+import os
 import movie_classes as mc
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)  # Clave secreta para la sesión
+app.secret_key = os.urandom(24)  # Clave secreta para sesiones
 sistema = mc.SistemaCine()
-archivo_actores    = "datos/movies_db - actores.csv"
-archivo_peliculas  = "datos/movies_db - peliculas.csv"
-archivo_relaciones = "datos/movies_db - relacion.csv"
-archivo_usuarios   = "datos/movies_db - users_hashed.csv"
-sistema.cargar_csv(archivo_actores, mc.Actor)
-sistema.cargar_csv(archivo_peliculas, mc.Pelicula)
-sistema.cargar_csv(archivo_relaciones, mc.Relacion)
-sistema.cargar_csv(archivo_usuarios, mc.User)
+ruta = 'datos/movies_db - '
+actores_csv = ruta + 'actores.csv'
+peliculas_csv = ruta + 'peliculas.csv'
+relaciones_csv = ruta + 'relacion.csv'
+users_csv = ruta + 'users_hashed.csv'
+sistema.cargar_csv(actores_csv,mc.Actor)
+sistema.cargar_csv(peliculas_csv,mc.Pelicula)
+sistema.cargar_csv(relaciones_csv,mc.Relacion)
+sistema.cargar_csv(users_csv,mc.User)
 
 @app.route('/')
 def index():
-    ''' Página principal de la aplicación '''
     return render_template('index.html')
 
 @app.route('/actores')
 def actores():
     ''' Muestra la lista de actores '''
-    actores = sistema.actores.values()
-    return render_template('actores.html', actores=actores)
+    lista_actores = sistema.actores.values()
+    return render_template('actores.html', actores=lista_actores)
 
 @app.route('/peliculas')
 def peliculas():
-    ''' Muestra la lista de películas '''
-    peliculas = sistema.peliculas.values()
-    return render_template('peliculas.html', peliculas=peliculas)
+    ''' Muestra la lista de peliculas '''
+    lista_peliculas = sistema.peliculas.values()
+    return render_template('peliculas.html', peliculas=lista_peliculas)
 
 @app.route('/actor/<int:id_actor>')
 def actor(id_actor):
     ''' Muestra la información de un actor '''
     actor = sistema.actores[id_actor]
     personajes = sistema.obtener_personajes_por_estrella(id_actor)
-    return render_template('actor.html', actor=actor, lista_peliculas=personajes)
+    return render_template('actor.html', actor=actor,lista_peliculas=personajes)
+
+@app.route('/pelicula/<int:id_pelicula>')
+def pelicula(id_pelicula):
+    ''' Muestra la información de una pelicula '''
+    pelicula = sistema.peliculas[id_pelicula]
+    actores = sistema.obtener_personajes_por_pelicula(id_pelicula)
+    return render_template('pelicula.html', pelicula=pelicula, lista_actores=actores)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    ''' Muestra el formulario de login '''
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -50,10 +57,43 @@ def login():
         if exito:
             session['logged_in'] = True
             session['username'] = sistema.usuario_actual.nombre_completo
+            flash('Inicio de sesion exitoso', 'success')
             return redirect(url_for('index'))
         else:
-            error = 'Usuario o contraseña incorrectos'
+            flash('Usuario o contraseña incorrectos', 'danger')
             return render_template('login.html')
     return render_template('login.html')
-if __name__ == '__main__':
+
+@app.route('/logout')
+def logout():
+    #Cierra la sesión del usuario
+    session.clear()
+    sistema.usuario_actual = None
+    flash('Has cerrado sesión correctamente', 'info')
+    return redirect(url_for('index'))
+
+@app.route('/agregar_relacion', methods=[GET])
+def agregar_relacion():
+    #Agregar una relacion entre un actor y una pelicula
+    if sistema.usuario_actual is None:
+        flash('Debes iniciar sesión para agregar una relación', 'warning')
+        return redirect(url_for('login'))
+    actores_list=[]
+    for actor in sistema.actores.values():
+        actores_list.append({
+            'id_estrella': actor.id_estrella,
+            'nombre': actor.nombre
+        })
+        sorted_actores = sorted(actores_list, key=lambda x: x['nombre'])
+    peliculas_list=[]
+    for pelicula in sistema.peliculas.values():
+        peliculas_list.append({
+            'id_pelicula': pelicula.id_pelicula,
+            'titulo': pelicula.titulo_pelicula
+        })
+        sorted_peliculas = sorted(peliculas_list, key=lambda x: x['titulo'])
+    return render_template('agregar_relacion.html', actores=sorted_actores, peliculas=sorted_peliculas)
+        
+
+if __name__ == '_main_':
     app.run(debug=True)
