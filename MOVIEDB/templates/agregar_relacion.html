@@ -10,7 +10,7 @@
                 <select class="form-select" id="movieSelect" name="movieSelect" required >
                     <option selected disabled value="">Escoge una película</option>
                     {% for pelicula in peliculas %}
-                        <option value="{{ pelicula.id_pelicula }}">{{ pelicula.titulo_pelicula }}</option>
+                        <option value="{{ pelicula.id_pelicula }}">{{ pelicula.titulo }}</option>
                     {% endfor %}
                 </select>
             </div>
