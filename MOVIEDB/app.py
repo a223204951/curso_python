@@ -5,7 +5,7 @@ import os
 import movie_classes as mc
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)  # Clave secreta para sesiones
+app.secret_key = os.urandom(24) # Clave secreta para sesiones
 sistema = mc.SistemaCine()
 ruta = 'datos/movies_db - '
 actores_csv = ruta + 'actores.csv'
@@ -52,12 +52,13 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        exito = sistema.login(username, password)
+        exito  = sistema.login(username, password)  
         if exito:
             session['logged_in'] = True
             session['username'] = sistema.usuario_actual.nombre_completo
-            flash('Inicio de sesion exitoso', 'success')
+            flash('Inicio de sesión exitoso', 'success')
             return redirect(url_for('index'))
+            #return render_template('index.html')
         else:
             flash('Usuario o contraseña incorrectos', 'danger')
             return render_template('login.html')
@@ -65,34 +66,44 @@ def login():
 
 @app.route('/logout')
 def logout():
-    #Cierra la sesión del usuario
+    ''' Cierra la sesión del usuario '''
     session.clear()
     sistema.usuario_actual = None
     flash('Has cerrado sesión correctamente', 'info')
     return redirect(url_for('index'))
 
-@app.route('/agregar_relacion', methods=['GET'])
+@app.route('/agregar_relacion', methods=['GET', 'POST'])
 def agregar_relacion():
-    #Agregar una relacion entre un actor y una pelicula
+    ''' Agrega una relación entre un actor y una película '''
     if sistema.usuario_actual is None:
-        flash('Debes iniciar sesión para agregar una relación', 'warning')
+        flash('Debes iniciar sesión para agregar relaciones', 'warning')
         return redirect(url_for('login'))
-    actores_list=[]
-    for actor in sistema.actores.values():
-        actores_list.append({
-            'id_estrella': actor.id_estrella,
-            'nombre': actor.nombre
-        })
-        sorted_actores = sorted(actores_list, key=lambda x: x['nombre'])
-    peliculas_list=[]
-    for pelicula in sistema.peliculas.values():
-        peliculas_list.append({
-            'id_pelicula': pelicula.id_pelicula,
-            'titulo': pelicula.titulo_pelicula
-        })
-        sorted_peliculas = sorted(peliculas_list, key=lambda x: x['titulo'])
-    return render_template('agregar_relacion.html', actores=sorted_actores, peliculas=sorted_peliculas)
-        
+    if request.method == 'GET':
+        actores_list=[]
+        for actor in sistema.actores.values():
+            actores_list.append({
+                'id_estrella': actor.id_estrella,
+                'nombre': actor.nombre
+            })
+            sorted_actores = sorted(actores_list, key=lambda x: x['nombre'])
+        peliculas_list=[]
+        for pelicula in sistema.peliculas.values():
+            peliculas_list.append({
+                'id_pelicula': pelicula.id_pelicula,
+                'titulo': pelicula.titulo_pelicula
+            })
+            sorted_peliculas = sorted(peliculas_list, key=lambda x: x['titulo'])
+            return render_template('agregar_relacion.html', actores=sorted_actores, peliculas=sorted_peliculas)
+    if request.method == 'POST':
+        id_actor = int(request.form['actorSelect'])
+        id_pelicula = int(request.form['movieSelect'])
+        personaje = request.form['character']
+        sistema.agregar_relacion(id_actor, id_pelicula, personaje)
+        # Guarda la relación en el CSV
+        sistema.guardar_csv(relaciones_csv, sistema.relaciones)
+        flash('Relación agregada correctamente', 'success')
+        # return redirect(url_for('index'))
+        return redirect(url_for('actor', id_actor=id_actor))
 
-if __name__ == '_main_':
+if __name__ == '__main__':
     app.run(debug=True)
